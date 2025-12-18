@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Grupo Lázaro</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Header común -->
+  <header class="header-fixed">
+    <div class="container flex">
+      <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo" />
+      <nav>
+        <ul class="menu flex">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="noticias.html">Noticias</a></li>
+          <li><a href="unirme.html">Unirme</a></li>
+          <li><a href="historias.html">Historias</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Panel Admin – Grupo Lázaro</h1>
+
+    <!-- Login -->
+    <div id="login-section">
+      <p>Ingresa la contraseña para acceder al panel:</p>
+      <input type="password" id="admin-password" placeholder="Contraseña" />
+      <button onclick="login()">Entrar</button>
+    </div>
+
+    <!-- Panel (oculto al principio) -->
+    <div id="admin-panel" style="display:none;">
+      <button onclick="logout()">Cerrar sesión</button>
+      <h2>Historias pendientes de aprobación</h2>
+      <div id="stories-list"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Grupo Lázaro © 2025 – No estás solo ❤️</p>
+    </div>
+  </footer>
+
+  <script>
+    // Cambiá esta URL por la de tu backend en Render cuando lo tengas
+    const API_URL = "https://lazaro-backend-sqlite.onrender.com/api";
+
+    const ADMIN_PASSWORD = "lazaro2025arg"; // Cambiala por una fuerte
+
+    function login() {
+      const pass = document.getElementById('admin-password').value;
+      if (pass === ADMIN_PASSWORD) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadStories();
+      } else {
+        alert("Contraseña incorrecta ❤️");
+      }
+    }
+
+    function logout() {
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('admin-panel').style.display = 'none';
+      document.getElementById('admin-password').value = '';
+    }
+
+    async function loadStories() {
+      try {
+        const API_URL = "https://lazaro-backend.onrender.com/api"; const res = await fetch(`${API_URL}/stories/all`);
+
+        const list = document.getElementById('stories-list');
+        list.innerHTML = '';
+
+        if (stories.length === 0) {
+          list.innerHTML = '<p>No hay historias pendientes.</p>';
+          return;
+        }
+
+        stories.forEach(story => {
+          const div = document.createElement('div');
+          div.className = 'card-noticia';
+          div.innerHTML = `
+            <p><strong>Nombre:</strong> ${story.nombre || 'Anónimo'}</p>
+            <p><strong>Email:</strong> ${story.email || 'No proporcionado'}</p>
+            <p><strong>Año diagnóstico:</strong> ${story.añoDiagnostico || 'No especificado'}</p>
+            <p><strong>Tipo EM:</strong> ${story.tipoEM || 'No especificado'}</p>
+            <p><strong>Historia:</strong> ${story.historia}</p>
+            <p><strong>Fecha:</strong> ${new Date(story.createdAt).toLocaleDateString()}</p>
+            <p><strong>Estado:</strong> ${story.approved ? 'Aprobada' : 'Pendiente'}</p>
+            ${!story.approved ? `
+              <button onclick="approveStory(${story.id})" class="btn">Aprobar</button>
+              <button onclick="rejectStory(${story.id})" style="background:red; color:white;">Rechazar</button>
+            ` : '<em>Ya aprobada</em>'}
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        alert("Error cargando historias");
+      }
+    }
+
+    async function approveStory(id) {
+      await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
+      loadStories();
+    }
+
+    async function rejectStory(id) {
+      if (confirm("¿Seguro que querés rechazar y borrar esta historia?")) {
+        await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
+        loadStories();
+      }
+    }
+  </script>
+</body>
+
+</html>
