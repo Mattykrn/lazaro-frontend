@@ -50,8 +50,11 @@
   </footer>
 
   <script>
-    // Cambiá esta URL por la de tu backend en Render cuando lo tengas
-    const API_URL = "https://lazaro-backend-sqlite.onrender.com/api";
+    // URL del backend: usa localhost para pruebas locales, sino la de Render
+    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
+    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:5000/api'
+      : _DEFAULT_API;
 
     const ADMIN_PASSWORD = "lazaro2025arg"; // Cambiala por una fuerte
 
@@ -74,12 +77,16 @@
 
     async function loadStories() {
       try {
-        const API_URL = "https://lazaro-backend.onrender.com/api"; const res = await fetch(`${API_URL}/stories/all`);
+        const url = `${API_URL}/stories/all`;
+        console.log('Fetching', url);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Error en la respuesta del servidor: ' + res.status);
+        const stories = await res.json();
 
         const list = document.getElementById('stories-list');
         list.innerHTML = '';
 
-        if (stories.length === 0) {
+        if (!stories || stories.length === 0) {
           list.innerHTML = '<p>No hay historias pendientes.</p>';
           return;
         }
@@ -103,7 +110,9 @@
           list.appendChild(div);
         });
       } catch (err) {
-        alert("Error cargando historias");
+        console.error('Error fetching stories from', API_URL, err);
+        const msg = (err && err.message) ? err.message : String(err);
+        alert("Error cargando historias (URL: " + `${API_URL}/stories/all` + "):\n" + msg + "\n\nPosibles causas: backend apagado, URL incorrecta o bloqueo CORS.");
       }
     }
 

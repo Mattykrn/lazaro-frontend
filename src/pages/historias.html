@@ -48,23 +48,49 @@
       </div>
     </footer>
     <script>
+      // Detectar entorno: localhost o producción
+      const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
+      const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+        ? 'http://localhost:5000/api'
+        : _DEFAULT_API;
+
       async function loadStories() {
-        const res = await fetch('https://lazaro-backend.onrender.com/api/stories');
-        const stories = await res.json();
+        try {
+          const res = await fetch(`${API_URL}/stories`);
+          if (!res.ok) throw new Error('Error ' + res.status);
+          const stories = await res.json();
 
-        const list = document.getElementById('stories-list'); // crea <div id="stories-list"></div> en HTML
-        list.innerHTML = '';
+          const gridDiv = document.querySelector('.grid-historias');
+          if (!gridDiv) return;
 
-        stories.forEach(story => {
-          const div = document.createElement('div');
-          div.className = 'card-historia';
-          div.innerHTML = `<p>${story.historia}</p><small>Anónimo – ${story.createdAt.slice(0, 10)}</small>`;
-          list.appendChild(div);
-        });
+          // Limpiar solo los cards generados (mantener el primero de ejemplo si lo hay)
+          const cards = gridDiv.querySelectorAll('.card-historia');
+          if (cards.length > 1) {
+            cards.forEach((c, i) => { if (i > 0) c.remove(); }); // mantener el primero
+          }
+
+          if (!stories || stories.length === 0) {
+            const msg = document.createElement('p');
+            msg.textContent = 'Pronto habrá historias inspiradoras... 💚';
+            gridDiv.appendChild(msg);
+            return;
+          }
+
+          stories.forEach(story => {
+            const div = document.createElement('div');
+            div.className = 'card-historia';
+            div.innerHTML = `<p>"${story.historia}"</p><small>Anónimo – ${story.createdAt.slice(0, 10)}</small>`;
+            gridDiv.appendChild(div);
+          });
+        } catch(err){
+          console.error('Error loading stories from', API_URL, err);
+          // No mostrar alerta, solo fallar silenciosamente
+        }
       }
 
       loadStories();
     </script>
+
   </body>
 
 </html>

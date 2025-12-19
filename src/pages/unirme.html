@@ -54,7 +54,53 @@
       <p>Contactanos: matii.toorres.06@gmail.com</p>
     </div>
   </footer>
-  const API_URL = "https://lazaro-backend.onrender.com/api";
+
+  <script>
+    // Detectar entorno: localhost o producción
+    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
+    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:5000/api'
+      : _DEFAULT_API;
+
+    document.querySelector('form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      
+      const nombre = document.getElementById('nombre').value.trim();
+      const historia = document.getElementById('historia').value.trim();
+      const edad = document.getElementById('edad').value || ''; 
+      
+      if (!nombre || !historia) {
+        alert('Por favor completa Nombre e Historia');
+        return;
+      }
+
+      const payload = {
+        nombre: nombre,
+        email: edad,
+        "añoDiagnostico": '',
+        tipoEM: '',
+        historia: historia
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/stories`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        if (!res.ok) throw new Error('Error ' + res.status);
+        const data = await res.json();
+        
+        alert('¡Tu historia fue recibida! ❤️\nPendiente de aprobación en el muro.');
+        this.reset(); // limpiar formulario
+        console.log('POST ok', data);
+      } catch(err){
+        console.error('Error', API_URL, err);
+        alert('Error enviando: ' + (err.message || err) + '\nIntenta de nuevo o contacta al administrador.');
+      }
+    });
+  </script>
 </body>
 
 </html>
