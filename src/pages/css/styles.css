@@ -6,6 +6,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #fff;
+  padding-top: 80px; /* FIX: Evita que el header fixed tape el contenido */
 }
 
 /* Paleta de colores */
@@ -24,11 +25,15 @@ body {
 .header-fixed {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
+  height: 80px; /* Altura fija para consistencia */
   background: var(--naranja-principal);
   z-index: 1000;
   padding: 15px 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center; /* Centra verticalmente logo y menú */
 }
 
 .header-fixed .logo {
@@ -235,6 +240,8 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+  body { padding-top: 120px; } /* Más espacio en móvil (menú columna) */
   .menu { flex-direction: column; }
   .overlay h1 { font-size: 2.5rem; }
+  .header-fixed { height: auto; }
 }
