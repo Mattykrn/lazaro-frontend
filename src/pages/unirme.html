@@ -29,8 +29,8 @@
 
     <form id="form-unirme">
       <div class="form-group">
-        <label for="nombre">Tu nombre (opcional – si lo dejas en blanco y marcas la casilla, saldrá anónimo)</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ej: Matías">
+        <label for="nombre">Tu nombre (opcional – si no lo completás y no marcás anónimo, saldrá "Anónimo")</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej: Matías" />
       </div>
 
       <div class="form-group">
@@ -53,7 +53,7 @@
       <div class="form-group checkbox">
         <label>
           <input type="checkbox" id="anonimo-checkbox">
-          Quiero permanecer anónimo (no aparecerá mi nombre)
+          Quiero permanecer anónimo (no aparecerá mi nombre en el muro)
         </label>
       </div>
 
@@ -86,14 +86,10 @@
       let nombre = document.getElementById('nombre').value.trim();
       const esAnonimo = document.getElementById('anonimo-checkbox').checked;
 
-      // Si marcó anónimo → siempre Anónimo (aunque haya puesto nombre)
-      if (esAnonimo) {
-        nombre = 'Anónimo';
-      }
-      // Si no marcó anónimo y no puso nombre → Anónimo por seguridad
-      else if (!nombre) {
-        nombre = 'Anónimo';
-      }
+      // Lógica correcta:
+      // Si marca anónimo → Anónimo
+      // Si no marca anónimo → el nombre que puso (o Anónimo si vacío)
+      nombre = esAnonimo ? 'Anónimo' : (nombre || 'Anónimo');
 
       const tipoEM = document.getElementById('tipoEM').value;
       const historia = document.getElementById('historia').value.trim();
@@ -131,5 +127,45 @@
       }
     });
   </script>
-</body>
-</html>
+       <button onclick="approveStory(${story.id})">Aprobar</button>
+            <button onclick="deleteStory(${story.id})">Eliminar</button>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Error cargando historias:', err);
+        alert('Error cargando historias. Intentá de nuevo más tarde.');
+      }
+    }
+
+    async function approveStory(id) {
+      try {
+        const res = await fetch(`${API_URL}/stories/approve/${id}`, {
+          method: 'POST'
+        });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        alert('Historia aprobada ❤️');
+        loadStories();
+      } catch (err) {
+        console.error('Error aprobando historia:', err);
+        alert('Error aprobando historia. Intentá de nuevo más tarde.');
+      }
+    }
+
+    async function deleteStory(id) {
+      try {
+        const res = await fetch(`${API_URL}/stories/delete/${id}`, {
+          method: 'DELETE'
+        });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        alert('Historia eliminada ❤️');
+        loadStories();
+      } catch (err) {
+        console.error('Error eliminando historia:', err);
+        alert('Error eliminando historia. Intentá de nuevo más tarde.');
+      }
+    }
+  </script>
+
+  </body>
+</html>     
