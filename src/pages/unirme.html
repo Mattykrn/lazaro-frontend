@@ -27,26 +27,42 @@
 
   <main class="container">
     <h1>Compartí tu historia</h1>
-    <form>
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required>
+    <p class="intro-text">Todo es seguro. Podés elegir si querés aparecer con nombre o anónimo ❤️</p>
 
-      <label for="edad">Edad:</label>
-      <input type="number" id="edad" name="edad">
+    <form id="form-unirme">
+      <div class="form-group">
+        <label for="nombre">Nombre (opcional)</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Ej: Matías" />
+      </div>
 
-      <label for="historia">Tu historia anónima:</label>
-      <textarea id="historia" name="historia" rows="6"></textarea>
+      <div class="form-group">
+        <label for="tipoEM">Tipo de Esclerosis Múltiple <span class="required">*</span></label>
+        <select id="tipoEM" name="tipoEM" required>
+          <option value="">Seleccioná tu fenotipo...</option>
+          <option value="SCA">Síndrome clínico aislado (SCA)</option>
+          <option value="EMRR">Remitente-recurrente (EMRR)</option>
+          <option value="EMPP">Primaria progresiva (EMPP)</option>
+          <option value="EMSP">Secundaria progresiva (EMSP)</option>
+          <option value="No especificar">Prefiero no decir</option>
+        </select>
+      </div>
 
-      <label>
-        <input type="checkbox" name="aprobar">
-        Quiero que mi historia aparezca en el muro (anónima)
-      </label>
+      <div class="form-group">
+        <label for="historia">Tu historia <span class="required">*</span></label>
+        <textarea id="historia" name="historia" rows="8" placeholder="Contanos tu experiencia..." required></textarea>
+      </div>
 
-      <button type="submit" class="btn">Enviar con amor ❤️</button>
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" id="anonimo-checkbox">
+          Quiero permanecer anónimo en el muro (no aparecerá mi nombre)
+        </label>
+      </div>
+
+      <button type="submit" class="btn" id="submit-btn">Enviar con amor ❤️</button>
     </form>
   </main>
 
-  <!-- Footer común -->
   <!-- Footer común -->
   <footer class="footer">
     <div class="container">
@@ -56,29 +72,41 @@
   </footer>
 
   <script>
-    // Detectar entorno: localhost o producción
     const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
     const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
       ? 'http://localhost:5000/api'
       : _DEFAULT_API;
 
-    document.querySelector('form').addEventListener('submit', async function(e){
+    const form = document.getElementById('form-unirme');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      
-      const nombre = document.getElementById('nombre').value.trim();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Enviando...";
+
+      let nombre = document.getElementById('nombre').value.trim();
+      const esAnonimo = document.getElementById('anonimo-checkbox').checked;
+
+      // Si quiere anonimato o no puso nombre → Anónimo
+      if (esAnonimo || !nombre) {
+        nombre = 'Anónimo';
+      }
+
+      const tipoEM = document.getElementById('tipoEM').value;
       const historia = document.getElementById('historia').value.trim();
-      const edad = document.getElementById('edad').value || ''; 
-      
-      if (!nombre || !historia) {
-        alert('Por favor completa Nombre e Historia');
+
+      if (!tipoEM || !historia) {
+        alert('Por favor completa el tipo de EM y tu historia');
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enviar con amor ❤️";
         return;
       }
 
       const payload = {
         nombre: nombre,
-        email: edad,
-        "añoDiagnostico": '',
-        tipoEM: '',
+        tipoEM: tipoEM,
         historia: historia
       };
 
@@ -88,16 +116,17 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        
+
         if (!res.ok) throw new Error('Error ' + res.status);
-        const data = await res.json();
-        
+
         alert('¡Tu historia fue recibida! ❤️\nPendiente de aprobación en el muro.');
-        this.reset(); // limpiar formulario
-        console.log('POST ok', data);
-      } catch(err){
-        console.error('Error', API_URL, err);
-        alert('Error enviando: ' + (err.message || err) + '\nIntenta de nuevo o contacta al administrador.');
+        form.reset();
+      } catch (err) {
+        console.error('Error', err);
+        alert('Error enviando. Intentá de nuevo más tarde ❤️');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Enviar con amor ❤️";
       }
     });
   </script>
