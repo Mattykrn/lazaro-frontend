@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin – Grupo Lázaro</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
   <!-- Header común -->
   <header class="header-fixed">
     <div class="container flex">
-      <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo" />
+      <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo">
       <nav>
         <ul class="menu flex">
           <li><a href="index.html">Home</a></li>
@@ -30,7 +28,7 @@
 
     <!-- Login -->
     <div id="login-section">
-      <p>Ingresa la contraseña para acceder al panel:</p>
+      <p>Ingresa la contraseña para acceder:</p>
       <input type="password" id="admin-password" placeholder="Contraseña" />
       <button onclick="login()">Entrar</button>
     </div>
@@ -50,7 +48,6 @@
   </footer>
 
   <script>
-    // URL del backend: usa localhost para pruebas locales, sino la de Render
     const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
     const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
       ? 'http://localhost:5000/api'
@@ -77,16 +74,13 @@
 
     async function loadStories() {
       try {
-        const url = `${API_URL}/stories/all`;
-        console.log('Fetching', url);
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('Error en la respuesta del servidor: ' + res.status);
+        const res = await fetch(`${API_URL}/stories/all`);
         const stories = await res.json();
 
         const list = document.getElementById('stories-list');
         list.innerHTML = '';
 
-        if (!stories || stories.length === 0) {
+        if (stories.length === 0) {
           list.innerHTML = '<p>No hay historias pendientes.</p>';
           return;
         }
@@ -96,23 +90,19 @@
           div.className = 'card-noticia';
           div.innerHTML = `
             <p><strong>Nombre:</strong> ${story.nombre || 'Anónimo'}</p>
-            <p><strong>Email:</strong> ${story.email || 'No proporcionado'}</p>
-            <p><strong>Año diagnóstico:</strong> ${story.añoDiagnostico || 'No especificado'}</p>
             <p><strong>Tipo EM:</strong> ${story.tipoEM || 'No especificado'}</p>
             <p><strong>Historia:</strong> ${story.historia}</p>
             <p><strong>Fecha:</strong> ${new Date(story.createdAt).toLocaleDateString()}</p>
             <p><strong>Estado:</strong> ${story.approved ? 'Aprobada' : 'Pendiente'}</p>
             ${!story.approved ? `
               <button onclick="approveStory(${story.id})" class="btn">Aprobar</button>
-              <button onclick="rejectStory(${story.id})" style="background:red; color:white;">Rechazar</button>
+              <button onclick="rejectStory(${story.id})" style="background:red; color:white; margin-left:10px;">Rechazar y borrar</button>
             ` : '<em>Ya aprobada</em>'}
           `;
           list.appendChild(div);
         });
       } catch (err) {
-        console.error('Error fetching stories from', API_URL, err);
-        const msg = (err && err.message) ? err.message : String(err);
-        alert("Error cargando historias (URL: " + `${API_URL}/stories/all` + "):\n" + msg + "\n\nPosibles causas: backend apagado, URL incorrecta o bloqueo CORS.");
+        alert("Error cargando historias");
       }
     }
 
@@ -122,12 +112,11 @@
     }
 
     async function rejectStory(id) {
-      if (confirm("¿Seguro que querés rechazar y borrar esta historia?")) {
+      if (confirm("¿Seguro que querés rechazar y BORRAR esta historia permanentemente?")) {
         await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
         loadStories();
       }
     }
   </script>
 </body>
-
 </html>

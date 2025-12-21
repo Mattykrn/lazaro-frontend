@@ -29,7 +29,7 @@
 
     <form id="form-unirme">
       <div class="form-group">
-        <label for="nombre">Tu nombre (opcional – si no lo completás y no marcás anónimo, saldrá "Anónimo")</label>
+        <label for="nombre">Tu nombre (opcional)</label>
         <input type="text" id="nombre" name="nombre" placeholder="Ej: Matías" />
       </div>
 
@@ -86,9 +86,7 @@
       let nombre = document.getElementById('nombre').value.trim();
       const esAnonimo = document.getElementById('anonimo-checkbox').checked;
 
-      // Lógica correcta:
-      // Si marca anónimo → Anónimo
-      // Si no marca anónimo → el nombre que puso (o Anónimo si vacío)
+      // Lógica nombre correcta
       nombre = esAnonimo ? 'Anónimo' : (nombre || 'Anónimo');
 
       const tipoEM = document.getElementById('tipoEM').value;
@@ -127,45 +125,5 @@
       }
     });
   </script>
-       <button onclick="approveStory(${story.id})">Aprobar</button>
-            <button onclick="deleteStory(${story.id})">Eliminar</button>
-          `;
-          list.appendChild(div);
-        });
-      } catch (err) {
-        console.error('Error cargando historias:', err);
-        alert('Error cargando historias. Intentá de nuevo más tarde.');
-      }
-    }
-
-    async function approveStory(id) {
-      try {
-        const res = await fetch(`${API_URL}/stories/approve/${id}`, {
-          method: 'POST'
-        });
-        if (!res.ok) throw new Error('Error ' + res.status);
-        alert('Historia aprobada ❤️');
-        loadStories();
-      } catch (err) {
-        console.error('Error aprobando historia:', err);
-        alert('Error aprobando historia. Intentá de nuevo más tarde.');
-      }
-    }
-
-    async function deleteStory(id) {
-      try {
-        const res = await fetch(`${API_URL}/stories/delete/${id}`, {
-          method: 'DELETE'
-        });
-        if (!res.ok) throw new Error('Error ' + res.status);
-        alert('Historia eliminada ❤️');
-        loadStories();
-      } catch (err) {
-        console.error('Error eliminando historia:', err);
-        alert('Error eliminando historia. Intentá de nuevo más tarde.');
-      }
-    }
-  </script>
-
-  </body>
-</html>     
+</body>
+</html>

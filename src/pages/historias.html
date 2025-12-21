@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Historias – Grupo Lázaro</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
+  <!-- Header común -->
   <header class="header-fixed">
     <div class="container flex">
       <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo">
@@ -24,73 +23,54 @@
     </div>
   </header>
 
-  <!-- Head + title "Historias de Esperanza" -->
+  <main class="container">
+    <h1>Muro de Historias de Esperanza</h1>
+    <p class="intro-text">Historias reales de personas que viven con EM y comparten su fuerza ❤️</p>
 
-  <body>
-    <!-- Header común -->
+    <div class="grid-historias" id="stories-grid"></div>
+  </main>
 
-    <main class="container">
-      <h1>Muro de Historias de Esperanza</h1>
-      <div class="grid-historias">
-        <div class="card-historia">
-          <p>"Llevo 5 años con EM y hoy soy mamá feliz"</p>
-          <small>Anónimo – 2025</small>
-        </div>
-        <!-- Más cards cuando tengamos historias reales -->
-      </div>
-    </main>
+  <footer class="footer">
+    <div class="container">
+      <p>Grupo Lázaro © 2025 – No estás solo ❤️</p>
+    </div>
+  </footer>
 
-    <!-- Footer común -->
-    <footer class="footer">
-      <div class="container">
-        <p>Grupo Lázaro © 2025 – No estás solo ❤️</p>
-        <p>Contactanos: matii.toorres.06@gmail.com</p>
-      </div>
-    </footer>
-    <script>
-      // Detectar entorno: localhost o producción
-      const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
-      const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-        ? 'http://localhost:5000/api'
-        : _DEFAULT_API;
+  <script>
+    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
+    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:5000/api'
+      : _DEFAULT_API;
 
-      async function loadStories() {
-        try {
-          const res = await fetch(`${API_URL}/stories`);
-          if (!res.ok) throw new Error('Error ' + res.status);
-          const stories = await res.json();
+    async function loadStories() {
+      try {
+        const res = await fetch(`${API_URL}/stories`);
+        const stories = await res.json();
 
-          const gridDiv = document.querySelector('.grid-historias');
-          if (!gridDiv) return;
+        const grid = document.getElementById('stories-grid');
+        grid.innerHTML = '';
 
-          // Limpiar solo los cards generados (mantener el primero de ejemplo si lo hay)
-          const cards = gridDiv.querySelectorAll('.card-historia');
-          if (cards.length > 1) {
-            cards.forEach((c, i) => { if (i > 0) c.remove(); }); // mantener el primero
-          }
-
-          if (!stories || stories.length === 0) {
-            const msg = document.createElement('p');
-            msg.textContent = 'Pronto habrá historias inspiradoras... 💚';
-            gridDiv.appendChild(msg);
-            return;
-          }
-
-          stories.forEach(story => {
-            const div = document.createElement('div');
-            div.className = 'card-historia';
-            div.innerHTML = `<p>"${story.historia}"</p><small>Anónimo – ${story.createdAt.slice(0, 10)}</small>`;
-            gridDiv.appendChild(div);
-          });
-        } catch(err){
-          console.error('Error loading stories from', API_URL, err);
-          // No mostrar alerta, solo fallar silenciosamente
+        if (stories.length === 0) {
+          grid.innerHTML = '<p class="text-center">Aún no hay historias aprobadas. ¡Sé el primero en compartir!</p>';
+          return;
         }
+
+        stories.forEach(story => {
+          const div = document.createElement('div');
+          div.className = 'card-historia';
+          div.innerHTML = `
+            <p><strong>${story.nombre || 'Anónimo'} (${story.tipoEM || 'No especificado'})</strong></p>
+            <p>${story.historia}</p>
+            <small>${new Date(story.createdAt).toLocaleDateString()}</small>
+          `;
+          grid.appendChild(div);
+        });
+      } catch (err) {
+        grid.innerHTML = '<p class="text-center">Error cargando historias. Intentá más tarde ❤️</p>';
       }
+    }
 
-      loadStories();
-    </script>
-
-  </body>
-
+    loadStories();
+  </script>
+</body>
 </html>
