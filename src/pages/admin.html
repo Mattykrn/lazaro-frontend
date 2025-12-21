@@ -33,6 +33,7 @@
 
     <div id="admin-panel" style="display:none;">
       <button onclick="logout()">Cerrar sesión</button>
+      <button onclick="loadStories()" class="btn" style="margin-left:20px;">Recargar historias</button>
       <h2>Historias pendientes de aprobación</h2>
       <div id="stories-list"></div>
     </div>
@@ -96,19 +97,27 @@
           list.appendChild(div);
         });
       } catch (err) {
-        alert("Error cargando historias");
+        list.innerHTML = '<p>Error cargando historias. Verificá que el backend esté corriendo.</p>';
       }
     }
 
     async function approveStory(id) {
-      await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
-      loadStories();
+      try {
+        await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
+        loadStories(); // Recarga automático después de aprobar
+      } catch (err) {
+        alert("Error aprobando");
+      }
     }
 
     async function rejectStory(id) {
       if (confirm("¿Seguro que querés rechazar y BORRAR esta historia permanentemente?")) {
-        await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
-        loadStories();
+        try {
+          await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
+          loadStories(); // Recarga automático después de borrar
+        } catch (err) {
+          alert("Error borrando");
+        }
       }
     }
   </script>
