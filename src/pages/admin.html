@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Header común -->
   <header class="header-fixed">
     <div class="container flex">
       <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo">
@@ -26,14 +25,12 @@
   <main class="container">
     <h1>Panel Admin – Grupo Lázaro</h1>
 
-    <!-- Login -->
     <div id="login-section">
       <p>Ingresa la contraseña para acceder:</p>
       <input type="password" id="admin-password" placeholder="Contraseña" />
       <button onclick="login()">Entrar</button>
     </div>
 
-    <!-- Panel (oculto al principio) -->
     <div id="admin-panel" style="display:none;">
       <button onclick="logout()">Cerrar sesión</button>
       <h2>Historias pendientes de aprobación</h2>
@@ -48,12 +45,9 @@
   </footer>
 
   <script>
-    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
-    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'http://localhost:5000/api'
-      : _DEFAULT_API;
+    const API_URL = "https://aversely-unrued-bailee.ngrok-free.dev/api";
 
-    const ADMIN_PASSWORD = "lazaro2025arg"; // Cambiala por una fuerte
+    const ADMIN_PASSWORD = "lazaro2025arg";
 
     function login() {
       const pass = document.getElementById('admin-password').value;

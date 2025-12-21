@@ -69,10 +69,7 @@
   </footer>
 
   <script>
-    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
-    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'http://localhost:5000/api'
-      : _DEFAULT_API;
+    const API_URL = "https://aversely-unrued-bailee.ngrok-free.dev/api";
 
     const form = document.getElementById('form-unirme');
     const submitBtn = document.getElementById('submit-btn');
@@ -86,7 +83,6 @@
       let nombre = document.getElementById('nombre').value.trim();
       const esAnonimo = document.getElementById('anonimo-checkbox').checked;
 
-      // Lógica nombre correcta
       nombre = esAnonimo ? 'Anónimo' : (nombre || 'Anónimo');
 
       const tipoEM = document.getElementById('tipoEM').value;

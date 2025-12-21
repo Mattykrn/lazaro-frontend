@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Header común -->
   <header class="header-fixed">
     <div class="container flex">
       <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo">
@@ -37,10 +36,7 @@
   </footer>
 
   <script>
-    const _DEFAULT_API = "https://lazaro-backend-sqlite.onrender.com/api";
-    const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'http://localhost:5000/api'
-      : _DEFAULT_API;
+    const API_URL = "https://aversely-unrued-bailee.ngrok-free.dev/api";
 
     async function loadStories() {
       try {
@@ -51,7 +47,7 @@
         grid.innerHTML = '';
 
         if (stories.length === 0) {
-          grid.innerHTML = '<p class="text-center">Aún no hay historias aprobadas. ¡Sé el primero en compartir!</p>';
+          grid.innerHTML = '<p class="text-center">Aún no hay historias aprobadas. ¡Sé el primero!</p>';
           return;
         }
 
