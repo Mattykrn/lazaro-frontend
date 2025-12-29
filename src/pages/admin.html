@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin – Grupo Lázaro</title>
+  <title>Admin – EMpaticos</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -23,7 +23,7 @@
   </header>
 
   <main class="container">
-    <h1>Panel Admin – Grupo Lázaro</h1>
+    <h1>Panel Admin – EMpaticos</h1>
 
     <div id="login-section">
       <p>Ingresa la contraseña para acceder:</p>
@@ -41,14 +41,14 @@
 
   <footer class="footer">
     <div class="container">
-      <p>Grupo Lázaro © 2025 – No estás solo ❤️</p>
+      <p>EMpaticos © 2025 – No estás solo ❤️</p>
     </div>
   </footer>
 
   <script>
-    const API_URL = "https://aversely-unrued-bailee.ngrok-free.dev/api";
+    const API_URL = "http://localhost:5000/api"; // Local backend
 
-    const ADMIN_PASSWORD = "lazaro2025arg";
+    const ADMIN_PASSWORD = "EMpaticos2025arg"; // Cambiala por una fuerte
 
     function login() {
       const pass = document.getElementById('admin-password').value;
@@ -70,6 +70,7 @@
     async function loadStories() {
       try {
         const res = await fetch(`${API_URL}/stories/all`);
+        if (!res.ok) throw new Error('Backend no responde');
         const stories = await res.json();
 
         const list = document.getElementById('stories-list');
@@ -97,26 +98,30 @@
           list.appendChild(div);
         });
       } catch (err) {
-        list.innerHTML = '<p>Error cargando historias. Verificá que el backend esté corriendo.</p>';
+        document.getElementById('stories-list').innerHTML = '<p>Error: Backend no está corriendo o conexión fallida. Corré node index.js en la carpeta backend.</p>';
       }
     }
 
     async function approveStory(id) {
       try {
-        await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
-        loadStories(); // Recarga automático después de aprobar
+        const res = await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
+        if (!res.ok) throw new Error();
+        loadStories(); // Recarga automático
       } catch (err) {
-        alert("Error aprobando");
+        alert("Error aprobando. Verificá backend.");
+        loadStories();
       }
     }
 
     async function rejectStory(id) {
       if (confirm("¿Seguro que querés rechazar y BORRAR esta historia permanentemente?")) {
         try {
-          await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
-          loadStories(); // Recarga automático después de borrar
+          const res = await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
+          if (!res.ok) throw new Error();
+          loadStories(); // Recarga automático
         } catch (err) {
-          alert("Error borrando");
+          alert("Error borrando. Verificá backend.");
+          loadStories();
         }
       }
     }
