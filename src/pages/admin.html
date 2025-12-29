@@ -9,7 +9,8 @@
 <body>
   <header class="header-fixed">
     <div class="container flex">
-      <img src="img/logo.png" alt="Logo Grupo Lázaro" class="logo">
+      <img src="./images/LogoEMpaticos2.jpg" alt="EMpaticos" class="logo">
+      <span class="header-title">EMpaticos</span>
       <nav>
         <ul class="menu flex">
           <li><a href="index.html">Home</a></li>
@@ -46,9 +47,9 @@
   </footer>
 
   <script>
-    const API_URL = "http://localhost:5000/api"; // Local backend
+    const API_URL = "http://localhost:5000/api"; // Backend local
 
-    const ADMIN_PASSWORD = "EMpaticos2025arg"; // Cambiala por una fuerte
+    const ADMIN_PASSWORD = "EMpaticos2025arg"; // Contraseña segura
 
     function login() {
       const pass = document.getElementById('admin-password').value;
@@ -98,7 +99,7 @@
           list.appendChild(div);
         });
       } catch (err) {
-        document.getElementById('stories-list').innerHTML = '<p>Error: Backend no está corriendo o conexión fallida. Corré node index.js en la carpeta backend.</p>';
+        document.getElementById('stories-list').innerHTML = '<p>Error: Backend no está corriendo. Corré node index.js.</p>';
       }
     }
 
@@ -106,7 +107,7 @@
       try {
         const res = await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
         if (!res.ok) throw new Error();
-        loadStories(); // Recarga automático
+        loadStories();
       } catch (err) {
         alert("Error aprobando. Verificá backend.");
         loadStories();
@@ -118,7 +119,7 @@
         try {
           const res = await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
           if (!res.ok) throw new Error();
-          loadStories(); // Recarga automático
+          loadStories();
         } catch (err) {
           alert("Error borrando. Verificá backend.");
           loadStories();

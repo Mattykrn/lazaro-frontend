@@ -37,12 +37,25 @@ body {
 }
 
 .header-fixed .logo {
-  height: 50px;
-  margin-right: 20px; /* Espacio entre logo y menú */
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
+  height: 60px; /* Ajusta tamaño */
+  margin-right: 15px;
+  border-radius: 12px; /* Opcional, bordes redondos */
 }
+
+/* Nombre al lado del logo (opcional, si querés texto "EMpaticos") */
+.header-title {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* En header HTML */
+<div class="container flex">
+  <img src="img/logo-empaticos.png" alt="EMpaticos" class="logo">
+  <span class="header-title">EMpaticos</span>
+  <nav>...</nav>
+</div>
 
 .menu {
   display: flex;
