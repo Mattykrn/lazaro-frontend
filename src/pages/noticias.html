@@ -3,68 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Noticias – EMpaticos</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>NOTICIAS – EMpaticos</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-  <!-- Header común -->
-  <header class="header-fixed">
-    <div class="container flex">
-      <img src="./images/LogoEMpaticos2.jpg" alt="EMpaticos" class="logo">
-      <span class="header-title">EMpaticos</span>
-      <nav>
-        <ul class="menu flex">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="noticias.html">Noticias</a></li>
-          <li><a href="unirme.html">Unirme</a></li>
-          <li><a href="historias.html">Historias</a></li>
-          <li><a href="nosotros.html">Nosotros</a></li>
+  <!-- HEADER NARANJA IDÉNTICO EN TODAS -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-warning fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="./images/LogoEMpaticos2.png" alt="EMpaticos" height="60" class="me-3 rounded">
+        <span class="fw-bold fs-3">EMpaticos</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-bold" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="unirme.html">Unirme</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="historias.html">Historias</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="nosotros.html">Nosotros</a></li>
         </ul>
-      </nav>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="container">
-    <h1>Noticias y Avances</h1>
-    <p class="intro-text">Información actualizada (diciembre 2025) sobre Esclerosis Múltiple, enfermedades raras y discapacidad. Fuentes confiables, lenguaje simple. Hacemos clic en los links para más detalles ❤️</p>
-
-    <div class="grid-noticias">
-      <!-- Noticia 1 - EM -->
-      <div class="card-noticia">
-        <h3>Tolebrutinib: esperanza para EM progresiva</h3>
-        <p>Nuevo medicamento oral que frena progresión hasta 31%. Prometedor para 2025-2026.</p>
-        <a href="https://multiplesclerosisnewstoday.com/news-posts/2025/09/25/tolebrutinib-delays-disability-progression-ppms-phase-3-trial/" target="_blank">Leer más (MS News Today)</a>
-      </div>
-
-      <!-- Noticia 2 - EM -->
-      <div class="card-noticia">
-        <h3>Reparación de mielina: nuevo avance</h3>
-        <p>Estudio 2025 muestra daño profundo en mielina, abre puerta a terapias reparadoras.</p>
-        <a href="https://www.infobae.com/salud/ciencia/2025/12/15/como-un-avance-sobre-la-mielina-podria-cambiar-la-vision-de-la-esclerosis-multiple/" target="_blank">Leer más (Infobae)</a>
-      </div>
-
-      <!-- Noticia 3 - Enfermedades Raras Argentina -->
-      <div class="card-noticia">
-        <h3>3.6 millones con EPOF en Argentina</h3>
-        <p>Estudio ENSERio: retrasos diagnóstico hasta 10 años. Piden más acceso a tratamientos.</p>
-        <a href="https://fadepof.org.ar/" target="_blank">Leer más (FADEPOF)</a>
-      </div>
-
-      <!-- Noticia 4 - Discapacidad -->
-      <div class="card-noticia">
-        <h3>Aumento prestadores discapacidad</h3>
-        <p>ANDIS subió 29-35% valores terapias (oct-dic 2025).</p>
-        <a href="https://www.argentina.gob.ar/noticias/comunicado-aumento-del-nomenclador-de-discapacidad" target="_blank">Leer más (ANDIS)</a>
-      </div>
-
-      <!-- Agregá más copiando este div -->
-    </div>
+  <!-- CONTENIDO PRINCIPAL (cambia por página) -->
+  <main class="container my-5 pt-5">
+    <!-- Aquí va el contenido único de cada página -->
+    <h1>Noticias</h1>
+    <p>Aquí encontrarás las últimas noticias y actualizaciones relacionadas con la esclerosis múltiple, enfermedades raras y discapacidad.</p>
+    <article class="mb-4">
+      <h3>El 40% de pacientes de esclerosis múltiple no accede a terapias óptimas debido a desigualdades territoriales</h3>
+      <p>Impulsar políticas sanitarias que reduzcan las disparidades geográficas.
+- Mejorar el acceso a tratamientos avanzados en todas las regiones.</p>
+      <a href="https://farmacosalud.com/el-40-de-pacientes-de-esclerosis-multiple-no-accede-a-terapias-optimas-debido-a-desigualdades-territoriales/">Leer más</a>
+    </article>
+    <article class="mb-4">
+      <h3>Detectan 2 nuevos subtipos de Esclerosis Multiple.</h3>
+      <p>Investigadores del University College London (UCL) y Queen Square Analytics identificaron dos nuevos subtipos biológicos de esclerosis múltiple mediante inteligencia artificial, y el hallazgo fue publicado en la revista científica.</p>
+      <a href="https://www.infobae.com/salud/ciencia/2025/12/30/detectan-dos-nuevos-subtipos-de-esclerosis-multiple-gracias-a-un-analisis-con-inteligencia-artificial/">Leer más</a>
+    </article>
   </main>
 
-  <!-- Footer común -->
-  <footer class="footer">
+  <!-- FOOTER NARANJA IDÉNTICO EN TODAS -->
+  <footer class="bg-warning text-dark text-center py-5 mt-5">
     <div class="container">
-      <p>EMpaticos – No estás solo ❤️</p>
+      <p class="fs-5 fw-bold">EMpaticos © 2025 – No estás solo ❤️</p>
       <p>Contactanos: matii.toorres.06@gmail.com</p>
     </div>
   </footer>

@@ -1,287 +1,62 @@
-/* Reset básico + box-sizing */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'Roboto', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #fff;
-  padding-top: 80px; /* FIX: Evita que el header fixed tape el contenido */
-}
-
-/* Paleta de colores */
+/* Paleta naranja EM mundial + contraste alto */
 :root {
   --naranja-principal: #fa4700;
   --naranja-hover: #f97316;
-  --naranja-detalle: #fb923c;
-  --naranja-suave: #fed7aa;
-  --naranja-claro: #fff7ed;
-  --verde-acento: #10b981;
-  --violeta-acento: #8b5cf6;
-  --gris-texto: #555;
+  --naranja-texto: #fa4700;
+  --bg-claro: #fff7ed;
+  --texto-principal: #333;
+  --texto-secundario: #555;
 }
 
-/* Header fijo */
-.header-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80px; /* Altura fija para consistencia */
-  background: var(--naranja-principal);
-  z-index: 1000;
-  padding: 15px 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center; /* Centra verticalmente logo y menú */
+/* Fondo suave y legible */
+body {
+  background: var(--bg-claro);
+  color: var(--texto-principal);
+  padding-top: 80px;
 }
 
-.header-fixed .logo {
-  height: 60px; /* Ajusta tamaño */
-  margin-right: 15px;
-  border-radius: 12px; /* Opcional, bordes redondos */
+/* Navbar y footer naranja puro */
+.navbar-dark.bg-warning, .bg-warning {
+  background-color: var(--naranja-principal) !important;
 }
 
-/* Nombre al lado del logo (opcional, si querés texto "EMpaticos") */
-.header-title {
-  color: white;
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+.nav-link {
+  color: white !important;
+  font-weight: 600;
 }
 
-/* En header HTML */
-<div class="container flex">
-  <img src="img/logo-empaticos.png" alt="EMpaticos" class="logo">
-  <span class="header-title">EMpaticos</span>
-  <nav>...</nav>
-</div>
-
-.menu {
-  display: flex;
-  gap: 10px;
-}
-
-.menu a {
-  color: white;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  transition: background 0.3s ease;
-}
-
-.menu a:hover {
+.nav-link:hover {
   background: var(--naranja-hover);
-  color: white;
-}
-
-/* Hero */
-.hero {
-  height: 100vh;
-  background-image: url('../img/fondo-hero.jpg');
-  background-size: cover;
-  background-position: center;
-}
-
-.overlay {
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  text-align: center;
-}
-
-.overlay h1 {
-  font-size: 4rem;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
-}
-
-/* Botón principal */
-.btn {
-  background: var(--naranja-hover);
-  color: white;
-  padding: 15px 30px;
-  border-radius: 50px;
-  text-decoration: none;
-  transition: background 0.3s ease;
-}
-
-.btn:hover {
-  background: var(--naranja-detalle);
-}
-
-/* Cards */
-.grid-mensajes, .grid-historias, .grid-noticias {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-}
-
-.card, .card-historia, .card-noticia {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  flex: 1 1 300px;
-  max-width: 400px;
-  transition: transform 0.3s ease;
-}
-
-.card-noticia:hover {
-  transform: translateY(-10px);
-}
-
-.card-noticia h3 {
-  color: var(--violeta-acento);
-  margin-bottom: 10px;
-}
-
-.card-noticia a {
-  display: inline-block;
-  margin-top: 15px;
-  color: var(--verde-acento);
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.card-noticia a:hover {
-  text-decoration: underline;
-}
-
-/* Footer */
-.footer {
-  background: var(--naranja-principal);
-  color: white;
-  text-align: center;
-  padding: 40px;
-  margin-top: 60px;
-}
-
-.footer a {
-  color: #dbeafe;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer .social-icons {
-  margin-top: 20px;
-}
-
-.footer .social-icons a {
-  margin: 0 10px;
-  color: white;
-  font-size: 1.5rem;
-  text-decoration: none;
-}
-
-.footer .social-icons a:hover {
-  color: #dbeafe;
-}
-
-.footer .credits {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #dbeafe;
-}
-
-.footer .credits a {
-  color: #dbeafe;
-  text-decoration: none;
-}
-
-.footer .credits a:hover {
-  text-decoration: underline;
-}
-
-/* Intro */
-.intro-text {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 40px;
-  color: var(--gris-texto);
-}
-
-/* Utilidades */
-.highlight {
-  background-color: var(--naranja-suave);
-  padding: 10px;
   border-radius: 8px;
 }
 
-.text-center { text-align: center; }
-.mt-20 { margin-top: 20px; }
-.mb-20 { margin-bottom: 20px; }
-.p-20 { padding: 20px; }
-.rounded { border-radius: 12px; }
-.shadow { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.border { border: 1px solid #e5e7eb; }
-
-.hover-zoom:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-.hover-underline:hover {
-  text-decoration: underline;
-}
-
-/* Animaciones */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.fade-in { animation: fadeIn 2s ease-in; }
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.slide-up { animation: slideUp 1s ease-out; }
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-.pulse { animation: pulse 2s infinite; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  body { padding-top: 120px; } /* Más espacio en móvil (menú columna) */
-  .menu { flex-direction: column; }
-  .overlay h1 { font-size: 2.5rem; }
-  .header-fixed { height: auto; }
-}
-
-/* Video explicativo */
-.video-explicativo {
-  margin: 60px 0;
-  text-align: center;
-}
-
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%; /* Ratio 16:9 */
-  height: 0;
-  overflow: hidden;
-  max-width: 800px;
-  margin: 30px auto;
+/* Cards legible */
+.card {
+  background: white;
+  border: 2px solid var(--naranja-principal);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.card-title {
+  color: var(--naranja-texto);
+}
+
+/* Botones */
+.btn-warning {
+  background: var(--naranja-principal);
+  border: none;
+}
+
+.btn-warning:hover {
+  background: var(--naranja-hover);
+}
+
+/* Form legible */
+.form-control, .form-select, textarea {
+  border: 2px solid var(--naranja-principal);
+}
+
+.form-control:focus, .form-select:focus, textarea:focus {
+  border-color: var(--naranja-hover);
+  box-shadow: 0 0 0 0.25rem rgba(250, 71, 0, 0.25);
 }

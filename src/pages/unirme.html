@@ -3,124 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unirme – EMpaticos</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>UNIRSE – EMpaticos</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-  <!-- Header común -->
-  <header class="header-fixed">
-    <div class="container flex">
-      <img src="./images/LogoEMpaticos2.jpg" alt="EMpaticos" class="logo">
-      <span class="header-title">EMpaticos</span>
-      <nav>
-        <ul class="menu flex">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="noticias.html">Noticias</a></li>
-          <li><a href="unirme.html">Unirme</a></li>
-          <li><a href="historias.html">Historias</a></li>
-          <li><a href="nosotros.html">Nosotros</a></li>
+  <!-- HEADER NARANJA IDÉNTICO EN TODAS -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-warning fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="./images/LogoEMpaticos2.png" alt="EMpaticos" height="60" class="me-3 rounded">
+        <span class="fw-bold fs-3">EMpaticos</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-bold" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="noticias.html">Noticias</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="unirme.html">Unirme</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="historias.html">Historias</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold" href="nosotros.html">Nosotros</a></li>
         </ul>
-      </nav>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="container">
-    <h1>Compartí tu historia</h1>
-    <p class="intro-text">Todo es seguro. Podés elegir si querés aparecer con tu nombre o anónimo ❤️</p>
-
-    <form id="form-unirme">
-      <div class="form-group">
-        <label for="nombre">Tu nombre (opcional)</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ej: Matías" />
-      </div>
-
-      <div class="form-group">
-        <label for="tipoEM">Tipo de Esclerosis Múltiple <span class="required">*</span></label>
-        <select id="tipoEM" name="tipoEM" required>
-          <option value="">Seleccioná tu fenotipo...</option>
-          <option value="SCA">Síndrome clínico aislado (SCA)</option>
-          <option value="EMRR">Remitente-recurrente (EMRR)</option>
-          <option value="EMPP">Primaria progresiva (EMPP)</option>
-          <option value="EMSP">Secundaria progresiva (EMSP)</option>
-          <option value="No especificar">Prefiero no decir</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="historia">Tu historia <span class="required">*</span></label>
-        <textarea id="historia" name="historia" rows="8" placeholder="Contanos tu experiencia..." required></textarea>
-      </div>
-
-      <div class="form-group checkbox">
-        <label>
-          <input type="checkbox" id="anonimo-checkbox">
-          Quiero permanecer anónimo (no aparecerá mi nombre en el muro)
-        </label>
-      </div>
-
-      <button type="submit" class="btn" id="submit-btn">Enviar con amor ❤️</button>
-    </form>
+  <!-- CONTENIDO PRINCIPAL (cambia por página) -->
+  <main class="container my-5 pt-5">
+    <!-- Aquí va el contenido único de cada página -->
+    <h2>Unirme a EMpaticos</h2>
+    <p>Si deseas unirte a nuestra comunidad de apoyo para personas con Esclerosis Múltiple, enfermedades raras y discapacidad, puedes hacerlo de las siguientes maneras:</p>
+    <ul>
+      <li><strong>Formulario de contacto:</strong> Completa nuestro formulario de contacto en la página "Nosotros" para recibir más información sobre cómo unirte.</li>
+      <li><strong>Redes sociales:</strong> Síguenos en nuestras redes sociales para estar al tanto de las últimas noticias y eventos.</li>
+      <li><strong>Voluntariado:</strong> Si deseas colaborar como voluntario, envíanos un correo electrónico a matii.toorres.06@gmail.com TU HISTORIA DE SUPERACION SALDRA EN EL APARTADO DE HISTORIAS O SI ES LA MAS INSPIRADORA LA DESTACAREMOS EN LA PÁGINA PRINCIPAL.</li>
   </main>
 
-  <footer class="footer">
+  <!-- FOOTER NARANJA IDÉNTICO EN TODAS -->
+  <footer class="bg-warning text-dark text-center py-5 mt-5">
     <div class="container">
-      <p>EMpaticos © 2025 – No estás solo ❤️</p>
+      <p class="fs-5 fw-bold">EMpaticos © 2025 – No estás solo ❤️</p>
       <p>Contactanos: matii.toorres.06@gmail.com</p>
     </div>
   </footer>
-
-  <script>
-    const API_URL = "https://aversely-unrued-bailee.ngrok-free.dev/api";
-
-    const form = document.getElementById('form-unirme');
-    const submitBtn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Enviando...";
-
-      let nombre = document.getElementById('nombre').value.trim();
-      const esAnonimo = document.getElementById('anonimo-checkbox').checked;
-
-      nombre = esAnonimo ? 'Anónimo' : (nombre || 'Anónimo');
-
-      const tipoEM = document.getElementById('tipoEM').value;
-      const historia = document.getElementById('historia').value.trim();
-
-      if (!tipoEM || !historia) {
-        alert('Por favor completa el tipo de EM y tu historia');
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Enviar con amor ❤️";
-        return;
-      }
-
-      const payload = {
-        nombre: nombre,
-        tipoEM: tipoEM,
-        historia: historia
-      };
-
-      try {
-        const res = await fetch(`${API_URL}/stories`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error('Error ' + res.status);
-
-        alert('¡Tu historia fue recibida! ❤️\nPendiente de aprobación en el muro.');
-        form.reset();
-      } catch (err) {
-        console.error('Error', err);
-        alert('Error enviando. Intentá de nuevo más tarde ❤️');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Enviar con amor ❤️";
-      }
-    });
-  </script>
 </body>
 </html>
