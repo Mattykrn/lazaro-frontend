@@ -76,90 +76,104 @@
 </footer>
 
 
-  <script>
-    const API_URL = "https://lazaro-backend-sqlite.onrender.com/api";
+<script>
+  const API_URL = "https://lazaro-backend-sqlite.onrender.com/api"; // Tu URL de Render
 
-    const ADMIN_PASSWORD = "EMpaticos2025arg"; // Cambiala por una fuerte
+  const ADMIN_PASSWORD = "EMpaticos2025arg";
 
-    function login() {
-      const pass = document.getElementById('admin-password').value;
-      if (pass === ADMIN_PASSWORD) {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        loadStories();
-      } else {
-        alert("Contraseña incorrecta ❤️");
+  function login() {
+    const pass = document.getElementById('admin-password').value;
+    if (pass === ADMIN_PASSWORD) {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadStories();
+    } else {
+      alert("Contraseña incorrecta ❤️");
+    }
+  }
+
+  function logout() {
+    document.getElementById('login-section').style.display = 'block';
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('admin-password').value = '';
+  }
+
+  async function loadStories() {
+    const list = document.getElementById('stories-list');
+    list.innerHTML = '<div class="col-12 text-center"><p class="lead">Cargando historias...</p></div>';
+
+    try {
+      const res = await fetch(`${API_URL}/stories/all`);
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Backend respondió con error ${res.status}: ${errText}`);
       }
-    }
+      const stories = await res.json();
 
-    function logout() {
-      document.getElementById('login-section').style.display = 'block';
-      document.getElementById('admin-panel').style.display = 'none';
-      document.getElementById('admin-password').value = '';
-    }
+      list.innerHTML = '';
 
-    async function loadStories() {
-      try {
-        const res = await fetch(`${API_URL}/stories/all`);
-        if (!res.ok) throw new Error('Backend no responde');
-        const stories = await res.json();
+      if (stories.length === 0) {
+        list.innerHTML = '<div class="col-12 text-center"><p class="lead">No hay historias pendientes.</p></div>';
+        return;
+      }
 
-        const list = document.getElementById('stories-list');
-        list.innerHTML = '';
-
-        if (stories.length === 0) {
-          list.innerHTML = '<div class="col-12 text-center"><p class="lead">No hay historias pendientes.</p></div>';
-          return;
-        }
-
-        stories.forEach(story => {
-          const col = document.createElement('div');
-          col.className = 'col';
-          col.innerHTML = `
-            <div class="card h-100 shadow-sm">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title text-warning">${story.nombre || 'Anónimo'} (${story.tipoEM || 'No especificado'})</h5>
-                <p class="card-text flex-grow-1">${story.historia}</p>
-                <small class="text-muted">${new Date(story.createdAt).toLocaleDateString()}</small>
-                <div class="mt-auto text-center">
-                  ${story.approved ? '<span class="badge bg-success">Aprobada</span>' : `
-                    <button onclick="approveStory(${story.id})" class="btn btn-success btn-sm me-2">Aprobar</button>
-                    <button onclick="rejectStory(${story.id})" class="btn btn-danger btn-sm">Rechazar</button>
-                  `}
-                </div>
+      stories.forEach(story => {
+        const col = document.createElement('div');
+        col.className = 'col';
+        col.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-warning">${story.nombre || 'Anónimo'} (${story.tipoEM || 'No especificado'})</h5>
+              <p class="card-text flex-grow-1">${story.historia}</p>
+              <small class="text-muted">${new Date(story.createdAt).toLocaleDateString()}</small>
+              <div class="mt-auto text-center">
+                ${story.approved ? '<span class="badge bg-success">Aprobada</span>' : `
+                  <button onclick="approveStory(${story.id})" class="btn btn-success btn-sm me-2">Aprobar</button>
+                  <button onclick="rejectStory(${story.id})" class="btn btn-danger btn-sm">Rechazar</button>
+                `}
               </div>
             </div>
-          `;
-          list.appendChild(col);
-        });
-      } catch (err) {
-        document.getElementById('stories-list').innerHTML = '<div class="col-12 text-center"><p class="lead text-danger">Error: Backend no está corriendo. Corré node index.js.</p></div>';
-      }
+          </div>
+        `;
+        list.appendChild(col);
+      });
+    } catch (err) {
+      console.error('Error completo en loadStories:', err);
+      list.innerHTML = `<div class="col-12 text-center">
+        <p class="lead text-danger">Error al cargar historias:</p>
+        <p>${err.message}</p>
+        <p>Verificá la consola del navegador (F12) para más detalles.</p>
+      </div>`;
     }
+  }
 
-    async function approveStory(id) {
+  async function approveStory(id) {
+    try {
+      const res = await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
+      if (!res.ok) throw new Error(await res.text());
+      loadStories();
+    } catch (err) {
+      alert("Error aprobando: " + err.message);
+      loadStories();
+    }
+  }
+
+  async function rejectStory(id) {
+    if (confirm("¿Seguro que querés rechazar y BORRAR esta historia permanentemente?")) {
       try {
-        const res = await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
-        if (!res.ok) throw new Error();
+        const res = await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error(await res.text());
         loadStories();
       } catch (err) {
-        alert("Error aprobando. Verificá backend.");
+        alert("Error borrando: " + err.message);
         loadStories();
       }
     }
+  }
 
-    async function rejectStory(id) {
-      if (confirm("¿Seguro que querés rechazar y BORRAR esta historia permanentemente?")) {
-        try {
-          const res = await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
-          if (!res.ok) throw new Error();
-          loadStories();
-        } catch (err) {
-          alert("Error borrando. Verificá backend.");
-          loadStories();
-        }
-      }
-    }
-  </script>
+  // Carga automática al entrar
+  // loadStories();  // Descomenta si querés que cargue solo al entrar (sin login)
+</script>
+
 </body>
 </html>
